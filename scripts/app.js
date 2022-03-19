@@ -63,19 +63,19 @@ function setup() {
     wordsList = samples(words, 50);
     // create a individual span for each character
     // so we can style them later
-    wordsList.split('').forEach(c => {
+    wordsList.split('').forEach((c, i) => {
         const charSpan = document.createElement('span');
         charSpan.innerText = c;
         if (c === ' ') { // check if the character is a space so you can detect words
             charSpan.classList.add('space-char')
+        } 
+
+        if (wordsList.length === (i + 1)) {
+            charSpan.classList.add('final-char')
         }
 
         textArea.appendChild(charSpan);
     });
-
-    const lastSpace = document.createElement('span')
-    lastSpace.classList.add('space-char')
-    textArea.appendChild(lastSpace); // the last word
 
     inputArea.value = '';
     inputedCharacters = '';
@@ -96,12 +96,6 @@ $('.input-area').on('keydown', function (e) {
     if (!finishedState) {
         key = e.code;
 
-        // if ((key === lastPressedKey) && !(key === 'Backspace')) {
-        //     return false;
-        // }
-        // lastPressedKey = key;
-
-
         switch (key) {
             case 'Enter':
                 return false; // don't want textareas to add extra lines so we'll just ignore
@@ -116,18 +110,19 @@ $('.input-area').on('keydown', function (e) {
             (e.keyCode > 96 && e.keyCode < 123)) { // lower alpha (a-z)
             inputedCharacters += e.key;
         } else if (key === 'Backspace') {
-            if (!(inputedCharacters.slice(-1) === ' ')) {
+            // if (!(inputedCharacters.slice(-1) === ' ')) {
                 inputedCharacters = inputedCharacters.slice(0, -1)
                 charactersTyped -= 2; // because charactersTyped++ occurs later in the script and that negates the functionality of this
-            } else {
-                return false;
-            }
+            // } else {
+            //     return false;
+            // }
         } else if (key === 'Space') {
             inputedCharacters += e.key;
         } else {
             return false;
         }
 
+// TODO: use index of correct text to compare it to inputedCharacters for backspace issues (if space on a correct letter it don't work lol)
 
         let inputArray = inputedCharacters.split('');
 
@@ -153,10 +148,17 @@ $('.input-area').on('keydown', function (e) {
                 errors++;
             }
 
-            if (c.classList.contains('space-char') && ((i + 1) === charactersTyped)) {
-                c.classList.remove('space-char')
-                wordsTyped++;
-                wordCount.textContent = `${wordsTyped}/${totalWordCount}`
+            if ((i + 1) === charactersTyped) {
+                if (c.classList.contains('space-char')) {
+                    c.classList.remove('space-char')
+                    wordsTyped++;
+                    wordCount.textContent = `${wordsTyped}/${totalWordCount}`
+                } else if (c.classList.contains('final-char')) {
+                    clearInterval(wpmCountTimer);
+                    finishedState = true;
+                    wordsTyped++;
+                    wordCount.textContent = `${wordsTyped}/${totalWordCount}`
+                }
             }
         });
 
@@ -172,11 +174,6 @@ $('.input-area').on('keydown', function (e) {
         }
 
         accuracyText.textContent = `${Math.round(accuracyVal)}%`;
-
-        if (wordsTyped === 50) {
-            clearInterval(wpmCountTimer);
-            finishedState = true;
-        }
     } else { return; }
 });
 
