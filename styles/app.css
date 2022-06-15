@@ -28,10 +28,10 @@
 body {
     text-rendering: optimizeLegibility;
     overflow: hidden;
-    background: var(--secondary);
-    filter: invert(1);
-
-    animation: invert 1s cubic-bezier(.91, .19, .14, .8) forwards;
+    background: var(--primary);
+    animation: fade-in 1.5s cubic-bezier(0.86, 0, 0.07, 1) forwards;
+    /* filter: invert(1); flashbang out 
+    animation: invert 1s cubic-bezier(.91,.19,.14,.8) forwards ; */
 }
 
 a {
@@ -65,8 +65,8 @@ a {
     font-size: 9em;
     margin-bottom: 0.4em;
     transform: translateY(-100%);
-    
-    animation: slide-in-y 0.75s cubic-bezier( 0.86, 0, 0.07, 1 ) forwards;
+
+    animation: slide-in-y 0.75s cubic-bezier(0.86, 0, 0.07, 1) forwards;
 }
 
 .word-count {
@@ -78,12 +78,12 @@ a {
     height: 100%;
     font-size: 2em;
     transform: translateX(150%);
-    
-    animation: slide-in-x 0.9s cubic-bezier( 0.86, 0, 0.07, 1 ) forwards;
+
+    animation: slide-in-x 0.9s cubic-bezier(0.86, 0, 0.07, 1) forwards;
 }
 
 .text-swap {
-    animation: text-slide-in-out 1s cubic-bezier( 0.86, 0, 0.07, 1 ) forwards !important;
+    animation: text-slide-in-out 1s cubic-bezier(0.86, 0, 0.07, 1) forwards !important;
 }
 
 .text span {
@@ -98,20 +98,22 @@ a {
     padding-right: 0.2em;
 }
 
-.wpm { 
+.wpm {
     transform: translateX(-200%);
-    
-    animation: slide-in-x 0.9s cubic-bezier( 0.86, 0, 0.07, 1 ) forwards;
+
+    animation: slide-in-x 0.9s cubic-bezier(0.86, 0, 0.07, 1) forwards;
 }
+
 .accuracy {
     transform: translateX(-200%);
-    
-    animation: slide-in-x 0.95s cubic-bezier( 0.86, 0, 0.07, 1 ) forwards;
+
+    animation: slide-in-x 0.95s cubic-bezier(0.86, 0, 0.07, 1) forwards;
 }
+
 .word-count {
     transform: translateX(-200%);
-    
-    animation: slide-in-x 1s cubic-bezier( 0.86, 0, 0.07, 1 ) forwards;
+
+    animation: slide-in-x 1s cubic-bezier(0.86, 0, 0.07, 1) forwards;
 }
 
 .typing-metrics {
@@ -141,8 +143,8 @@ a {
     resize: none;
     outline: none;
     transform: translateY(175%);
-    
-    animation: slide-in-y 0.75s cubic-bezier( 0.86, 0, 0.07, 1 ) forwards;
+
+    animation: slide-in-y 0.75s cubic-bezier(0.86, 0, 0.07, 1) forwards;
 }
 
 .restart-button {
@@ -152,8 +154,8 @@ a {
     width: 6em;
     transform: translateX(200%);
     transition-duration: 200ms;
-    
-    animation: slide-in-x 1s cubic-bezier( 0.86, 0, 0.07, 1 ) forwards;
+
+    animation: slide-in-x 1s cubic-bezier(0.86, 0, 0.07, 1) forwards;
 }
 
 .restart-button:hover {
@@ -162,7 +164,7 @@ a {
 }
 
 .ichar {
-    color: var(--blood-red) !important; 
+    color: var(--blood-red) !important;
     text-decoration: underline;
 }
 
@@ -196,12 +198,22 @@ a {
     }
 }
 
-@keyframes invert {
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* @keyframes invert {
     to {
         background: var(--primary);
         filter: invert(0)
     }
-}
+} */
 
 @keyframes wobble {
     from {
