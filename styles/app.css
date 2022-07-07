@@ -59,6 +59,8 @@ a {
     padding-left: 4em;
     margin-left: 4em;
     width: 70em;
+
+    transition-duration: 0.5s;
 }
 
 .header {
@@ -170,6 +172,10 @@ a {
 
 .cchar {
     color: var(--secondary) !important;
+}
+
+.nchar {
+    text-decoration: underline !important;
 }
 
 .footer {

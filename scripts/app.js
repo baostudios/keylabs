@@ -49,9 +49,7 @@ async function reset() {
     inputArea.removeEventListener("keydown", function () { init() });
 
     textArea.classList.add("text-swap");
-    await sleep(500);
-    setup();
-    textArea.classList.remove("text-swap");
+    setTimeout(function () { setup(); textArea.classList.remove("text-swap") }, 500)
 }
 
 function setup() {
@@ -68,7 +66,7 @@ function setup() {
         charSpan.innerText = c;
         if (c === ' ') { // check if the character is a space so you can detect words
             charSpan.classList.add('space-char')
-        } 
+        }
 
         if (wordsList.length === (i + 1)) {
             charSpan.classList.add('final-char')
@@ -111,8 +109,8 @@ $('.input-area').on('keydown', function (e) {
             inputedCharacters += e.key;
         } else if (key === 'Backspace') {
             // if (!(inputedCharacters.slice(-1) === ' ')) {
-                inputedCharacters = inputedCharacters.slice(0, -1)
-                charactersTyped -= 2; // because charactersTyped++ occurs later in the script and that negates the functionality of this
+            inputedCharacters = inputedCharacters.slice(0, -1)
+            charactersTyped -= 2; // because charactersTyped++ occurs later in the script and that negates the functionality of this
             // } else {
             //     return false;
             // }
@@ -122,7 +120,7 @@ $('.input-area').on('keydown', function (e) {
             return false;
         }
 
-// TODO: use index of correct text to compare it to inputedCharacters for backspace issues (if space on a correct letter it don't work lol)
+        // TODO: use index of correct text to compare it to inputedCharacters for backspace issues (if space on a correct letter it don't work lol)
 
         let inputArray = inputedCharacters.split('');
 
@@ -132,21 +130,31 @@ $('.input-area').on('keydown', function (e) {
         textSpanArray = textArea.querySelectorAll('span');
         textSpanArray.forEach((c, i) => {
             let typedChar = inputArray[i];
+            let inputLastIndex = inputArray.length // determine the index of the last character
 
+            
             if (typedChar == null) {
                 c.classList.remove('cchar');
+                c.classList.remove('ichar');
+                c.classList.remove('nchar');
+
+            } if (inputLastIndex === i) {
+                c.classList.add('nchar');
                 c.classList.remove('ichar');
 
             } else if (typedChar === c.innerText) {
                 c.classList.add('cchar');
                 c.classList.remove('ichar');
+                c.classList.remove('nchar');
 
-            } else {
+            } else if (inputLastIndex > i) {
                 c.classList.add('ichar');
                 c.classList.remove('cchar');
 
                 errors++;
             }
+
+
 
             if ((i + 1) === charactersTyped) {
                 if (c.classList.contains('space-char')) {
