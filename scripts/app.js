@@ -10,6 +10,7 @@ let wpmText = document.querySelector(".wpm");
 let textArea = document.querySelector(".text");
 let inputArea = document.querySelector(".input-area");
 let restartBtn = document.querySelector(".restart-button");
+let capsLockIndicator = document.querySelector(".caps-lock-indicator")
 
 let wordsTyped = 0;
 let errors = 0;
@@ -52,6 +53,17 @@ async function reset() {
     setTimeout(function () { setup(); textArea.classList.remove("text-swap") }, 500)
 }
 
+// function capsLockCheck(e) {
+//     if (e.getModifierState("CapsLock")) {
+//         console.log('monke')
+//         capsLockIndicator.classList.remove("hidden")
+//     }
+//     else {
+//         console.log('monkey')
+//         capsLockIndicator.classList.add("hidden")
+//     }
+// }
+
 function setup() {
     inputArea.addEventListener("keydown", function () { init() }, { once: true });
 
@@ -90,23 +102,34 @@ function setup() {
     wordCount.textContent = `${wordsTyped}/${totalWordCount}`
 }
 
-$('.input-area').on('keydown', function (e) {
+$('.input-area').on('keydown', function (event) {
+    // if (event.getModifierState("CapsLock")) {
+    //     console.log('monke') // great debugging here I know
+    //     capsLockIndicator.classList.remove("hidden")
+    // }
+    // else {
+    //     console.log('monkey')
+    //     capsLockIndicator.classList.add("hidden")
+    // }
+
+    switch (key) {
+        case 'Enter':
+            return false; // don't want textareas to add extra lines so we'll just ignore
+
+        case 'Space':
+            inputArea.value = '';
+            break;
+    }
+
+
     if (!finishedState) {
-        key = e.code;
+        key = event.code;
 
-        switch (key) {
-            case 'Enter':
-                return false; // don't want textareas to add extra lines so we'll just ignore
 
-            case 'Space':
-                inputArea.value = '';
-                break;
-        }
-
-        if ((e.keyCode > 47 && e.keyCode < 58) || // numeric (0-9)
-            (e.keyCode > 64 && e.keyCode < 91) || // upper alpha (A-Z)
-            (e.keyCode > 96 && e.keyCode < 123)) { // lower alpha (a-z)
-            inputedCharacters += e.key;
+        if ((event.keyCode > 47 && event.keyCode < 58) || // numeric (0-9)
+            (event.keyCode > 64 && event.keyCode < 91) || // upper alpha (A-Z)
+            (event.keyCode > 96 && event.keyCode < 123)) { // lower alpha (a-z)
+            inputedCharacters += event.key;
         } else if (key === 'Backspace') {
             // if (!(inputedCharacters.slice(-1) === ' ')) {
             inputedCharacters = inputedCharacters.slice(0, -1)
@@ -115,7 +138,7 @@ $('.input-area').on('keydown', function (e) {
             //     return false;
             // }
         } else if (key === 'Space') {
-            inputedCharacters += e.key;
+            inputedCharacters += event.key;
         } else {
             return false;
         }
